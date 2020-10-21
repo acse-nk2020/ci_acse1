@@ -1,6 +1,6 @@
 import pytest
 
-from simple_functions import my_sum, factorial
+from simple_functions import my_sum, factorial, my_product
 
 
 class TestSimpleFunctions(object):
@@ -24,3 +24,14 @@ class TestSimpleFunctions(object):
         '''Test our factorial function'''
         answer = factorial(number)
         assert answer == expected
+
+    @pytest.mark.parametrize('numbers, expected', [
+        ([1, 2, 3], 6),
+        ([3, 4, 8], 96),
+        ([2], 2),
+        ([-1, 5], -5)
+    ])
+    def test_product(self, numbers, expected):
+        '''Test the product function'''
+        product = my_product(numbers)
+        assert product == expected
