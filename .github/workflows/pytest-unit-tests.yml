@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-20.04]
+        os: [ubuntu-18.04, ubuntu-20.04, macos-latest]
     steps:
       - name: Checkout simple_functions
         uses: actions/checkout@v2
@@ -25,12 +25,20 @@ jobs:
         run: |
           echo "::set-env name=TESTS::tests/"
 
-      - name: Install dependencies
+      - name: Install dependencies on Linux
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get install python3-setuptools -y
           pip3 install --upgrade pip
           pip3 install -e .
           pip3 install -r requirements.txt
+
+      - name: Install dependencies on MacOS
+        if: runner.os == 'macOS'
+        run: |
+          pip3 install --upgrade pip
+          pip install -e .
+          pip install -r requirements.txt
 
       - name: Set a run prefix
         run: |
